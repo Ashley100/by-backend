@@ -2,7 +2,7 @@
 import { PrismaClient } from "@prisma/client";
 import type { ProductService } from "./graphql/productService";
 
-type User = {
+export type User = {
   id: number;
   role: string;
   name: string;

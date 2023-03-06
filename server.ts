@@ -25,7 +25,7 @@ export const server = new ApolloServer({
       // HACK: Find why it's not working
       prisma: db,
       sdk: {
-        product: new ProductService(db)
+        product: new ProductService(db, user)
       }
     }
   }

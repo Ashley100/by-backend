@@ -45,6 +45,7 @@ export const createProduct = mutationField("createProduct", {
     try {
       const product = await ctx.db.product.create(data);
       ctx.sdk.product.syncWithElastic(product.id);
+      // ctx.sdk.product.syncWithElastic(3);
       
       return product;
     } catch(error) {
