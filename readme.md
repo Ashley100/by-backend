@@ -16,7 +16,6 @@ Project has one query that allow to fetch user by it's ID and one mutation that 
 5. Add a simple viewer query that will allow user to see it's profile and all owned listings by passing userId request header
 6. (Optional) Add user role(ADMIN, USER). Admins can see all listings, users can only see listings in active status
 7. (Optional) Implement a same search/filters query by using Elastic search. Add a configuration flat that will allow the backend to switch between elastic/sqllite
-- I realized what the Elastic is, but I did not have enough time to implement it and test it.
 
 ## Useful links
  - https://www.prisma.io
