@@ -1,4 +1,8 @@
-import { extendType, intArg, nonNull, stringArg } from "nexus";
+// Package modules
+import { extendType, nonNull, stringArg } from "nexus";
+
+// Local modules
+import { ROLES } from "../../utils/constants";
 
 export const createUser = extendType({
   type: "Mutation",
@@ -9,9 +13,9 @@ export const createUser = extendType({
         email: nonNull(stringArg()),
         name: nonNull(stringArg()),
       },
-      resolve: async (_root, { email, name }, ctx, info) => {
+      resolve: async (_root, { email, name }, ctx, _info) => {
         const user = await ctx.db.user.create({
-          data: { email, name },
+          data: { email, name, role: ROLES.USER }
         });
 
         return user;

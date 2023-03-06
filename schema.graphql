@@ -3,7 +3,10 @@
 
 
 type Mutation {
+  activateProduct(id: Int!, status: Boolean!): Product
+  createProduct(active: Boolean!, category: String!, color: String!, description: String!, ownerId: Int!, title: String!): Product
   createUser(email: String!, name: String!): User
+  makeAdmin(id: Int!, isAdmin: Boolean!): User
 }
 
 type Product {
@@ -16,8 +19,23 @@ type Product {
   title: String!
 }
 
+enum ProductsFilter {
+  active
+  all
+}
+
+type ProductsPayload {
+  count: Int
+  data: [Product]
+  hasMore: Boolean
+}
+
 type Query {
+  product(id: Int!): Product
+  products(filter: ProductsFilter, first: Int! = 10, searchBy: String, skip: Int! = 0): ProductsPayload
   user(id: Int!): User
+  userProfile: User
+  users: [User!]!
 }
 
 type User {
@@ -25,4 +43,5 @@ type User {
   id: Int!
   name: String
   products: [Product!]!
+  role: String
 }

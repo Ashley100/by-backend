@@ -1,4 +1,4 @@
-import { extendType, intArg, nonNull } from "nexus";
+import {extendType, intArg, nonNull} from "nexus";
 
 export const user = extendType({
   type: "Query",

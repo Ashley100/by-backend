@@ -19,6 +19,7 @@ model User {
   email    String    @unique
   name     String?
   products Product[]
+  role     String?
 }
 
 model Product {

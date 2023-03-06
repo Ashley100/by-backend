@@ -17,6 +17,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  ProductsFilter: "active" | "all"
 }
 
 export interface NexusGenScalars {
@@ -37,11 +38,17 @@ export interface NexusGenObjects {
     id: number; // Int!
     title: string; // String!
   }
+  ProductsPayload: { // root type
+    count?: number | null; // Int
+    data?: Array<NexusGenRootTypes['Product'] | null> | null; // [Product]
+    hasMore?: boolean | null; // Boolean
+  }
   Query: {};
   User: { // root type
     email: string; // String!
     id: number; // Int!
     name?: string | null; // String
+    role?: string | null; // String
   }
 }
 
@@ -53,11 +60,14 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenObjects
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
+    activateProduct: NexusGenRootTypes['Product'] | null; // Product
+    createProduct: NexusGenRootTypes['Product'] | null; // Product
     createUser: NexusGenRootTypes['User'] | null; // User
+    makeAdmin: NexusGenRootTypes['User'] | null; // User
   }
   Product: { // field return type
     active: boolean; // Boolean!
@@ -68,20 +78,33 @@ export interface NexusGenFieldTypes {
     owner: NexusGenRootTypes['User']; // User!
     title: string; // String!
   }
+  ProductsPayload: { // field return type
+    count: number | null; // Int
+    data: Array<NexusGenRootTypes['Product'] | null> | null; // [Product]
+    hasMore: boolean | null; // Boolean
+  }
   Query: { // field return type
+    product: NexusGenRootTypes['Product'] | null; // Product
+    products: NexusGenRootTypes['ProductsPayload'] | null; // ProductsPayload
     user: NexusGenRootTypes['User'] | null; // User
+    userProfile: NexusGenRootTypes['User'] | null; // User
+    users: NexusGenRootTypes['User'][]; // [User!]!
   }
   User: { // field return type
     email: string; // String!
     id: number; // Int!
     name: string | null; // String
     products: NexusGenRootTypes['Product'][]; // [Product!]!
+    role: string | null; // String
   }
 }
 
 export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
+    activateProduct: 'Product'
+    createProduct: 'Product'
     createUser: 'User'
+    makeAdmin: 'User'
   }
   Product: { // field return type name
     active: 'Boolean'
@@ -92,25 +115,60 @@ export interface NexusGenFieldTypeNames {
     owner: 'User'
     title: 'String'
   }
+  ProductsPayload: { // field return type name
+    count: 'Int'
+    data: 'Product'
+    hasMore: 'Boolean'
+  }
   Query: { // field return type name
+    product: 'Product'
+    products: 'ProductsPayload'
     user: 'User'
+    userProfile: 'User'
+    users: 'User'
   }
   User: { // field return type name
     email: 'String'
     id: 'Int'
     name: 'String'
     products: 'Product'
+    role: 'String'
   }
 }
 
 export interface NexusGenArgTypes {
   Mutation: {
+    activateProduct: { // args
+      id: number; // Int!
+      status: boolean; // Boolean!
+    }
+    createProduct: { // args
+      active: boolean; // Boolean!
+      category: string; // String!
+      color: string; // String!
+      description: string; // String!
+      ownerId: number; // Int!
+      title: string; // String!
+    }
     createUser: { // args
       email: string; // String!
       name: string; // String!
     }
+    makeAdmin: { // args
+      id: number; // Int!
+      isAdmin: boolean; // Boolean!
+    }
   }
   Query: {
+    product: { // args
+      id: number; // Int!
+    }
+    products: { // args
+      filter?: NexusGenEnums['ProductsFilter'] | null; // ProductsFilter
+      first: number; // Int!
+      searchBy?: string | null; // String
+      skip: number; // Int!
+    }
     user: { // args
       id: number; // Int!
     }
@@ -127,7 +185,7 @@ export type NexusGenObjectNames = keyof NexusGenObjects;
 
 export type NexusGenInputNames = never;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = keyof NexusGenEnums;
 
 export type NexusGenInterfaceNames = never;
 

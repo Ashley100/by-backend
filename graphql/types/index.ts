@@ -1,2 +1,3 @@
 export * from "./User";
-export * from './Product'
+export * from './Product';
+export * from './ProductsPayload';
