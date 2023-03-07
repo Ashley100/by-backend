@@ -9,6 +9,6 @@ export const User = objectType({
     t.field(PrismaUser.email);
     t.field(PrismaUser.name);
     t.field(PrismaUser.products);
-    t.field(PrismaUser.role);
+    t.field(PrismaUser.roles);
   },
 });

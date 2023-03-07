@@ -1,25 +1,37 @@
 // Package modules
-import { booleanArg, intArg, mutationField, nonNull } from "nexus";
+import { ApolloError } from "apollo-server";
+import { intArg, mutationField, nonNull } from "nexus";
 
 // Local modules
 import { ROLES } from "../../utils/constants";
 
 export const makeAdmin = mutationField("makeAdmin", {
-  type: "User",
+  type: "UserRoles",
   args: {
     id: nonNull(intArg()),
-    isAdmin: nonNull(booleanArg())
   },
-  resolve: async (_root, { id, isAdmin }, ctx, _info) => {
-    const user = await ctx.db.user.update({
+  resolve: async (_root, { id }, ctx, _info) => {
+    const userRoles = await ctx.db.userRoles.findFirst({
       where: {
-        id
-      },
-      data: {
-        role: isAdmin ? ROLES.ADMIN : ROLES.USER
+        userId: id,
+        roleId: ROLES.ADMIN
       }
     });
 
-    return user;
+    if (userRoles) {
+      return userRoles;
+    }
+
+    try {
+      const roles = await ctx.db.userRoles.create({
+        data: {
+          userId: id,
+          roleId: ROLES.ADMIN
+        }
+      });
+      return roles;
+    } catch(e) {
+      throw new ApolloError("Something went wrong!");
+    }
   },
 });

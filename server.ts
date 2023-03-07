@@ -5,7 +5,7 @@ import { applyMiddleware } from "graphql-middleware";
 // Local modules
 import { schema } from "./schema";
 import { db } from "./db";
-import { Context } from "./context";
+import { Context, User } from "./context";
 import { permissions } from "./middleware/permissions";
 import { ProductService } from "./graphql/productService";
 
@@ -13,9 +13,12 @@ export const server = new ApolloServer({
   schema: applyMiddleware(schema, permissions),
   context: async ({ req }): Promise<Context> => {
     // A simple way to track user data
-    const user = await db.user.findUnique({
+    const user: User = await db.user.findUnique({
       where: {
         id: Number(req.headers?.userid)
+      },
+      include: {
+        roles: true
       }
     });
 

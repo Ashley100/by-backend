@@ -35,7 +35,15 @@ export class ProductService {
     private readonly db: PrismaClient,
     private readonly user?: User
   ) {
-    this.isAdmin = user?.role === ROLES.ADMIN;
+    this.isAdmin = false;
+
+    if (user) {
+      user.roles.map((role: any) => {
+        if (role.roleId === ROLES.ADMIN) {
+          this.isAdmin = true;
+        }
+      });
+    }
   }
 
   async searchProducts(
@@ -80,18 +88,19 @@ export class ProductService {
     // User can view only active pruducts
     let activeFilter: Prisma.ProductWhereInput = { active: true };
 
+    
     // Admin can view both only active or all products 
     if (this.isAdmin) {
       activeFilter = filter !== "all"
-        ? { active: !!filter }
-        : {};
+      ? { active: !!filter }
+      : {};
     }
 
     const where: Prisma.ProductWhereInput = {
       ...searchByFilter,
       ...activeFilter
     };
-
+    
     const data = await this.db.product.findMany({ take: first, skip, where });
     const count = await this.db.product.count({ where });
 

@@ -44,11 +44,19 @@ export interface NexusGenObjects {
     hasMore?: boolean | null; // Boolean
   }
   Query: {};
+  Role: { // root type
+    id: number; // Int!
+    name: string; // String!
+  }
   User: { // root type
     email: string; // String!
     id: number; // Int!
     name?: string | null; // String
-    role?: string | null; // String
+  }
+  UserRoles: { // root type
+    id: number; // Int!
+    roleId: number; // Int!
+    userId: number; // Int!
   }
 }
 
@@ -66,8 +74,9 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     activateProduct: NexusGenRootTypes['Product'] | null; // Product
     createProduct: NexusGenRootTypes['Product'] | null; // Product
+    createRole: NexusGenRootTypes['Role'] | null; // Role
     createUser: NexusGenRootTypes['User'] | null; // User
-    makeAdmin: NexusGenRootTypes['User'] | null; // User
+    makeAdmin: NexusGenRootTypes['UserRoles'] | null; // UserRoles
   }
   Product: { // field return type
     active: boolean; // Boolean!
@@ -86,16 +95,28 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     product: NexusGenRootTypes['Product'] | null; // Product
     products: NexusGenRootTypes['ProductsPayload'] | null; // ProductsPayload
+    roles: NexusGenRootTypes['Role'][]; // [Role!]!
     user: NexusGenRootTypes['User'] | null; // User
     userProfile: NexusGenRootTypes['User'] | null; // User
     users: NexusGenRootTypes['User'][]; // [User!]!
+  }
+  Role: { // field return type
+    id: number; // Int!
+    name: string; // String!
   }
   User: { // field return type
     email: string; // String!
     id: number; // Int!
     name: string | null; // String
     products: NexusGenRootTypes['Product'][]; // [Product!]!
-    role: string | null; // String
+    roles: NexusGenRootTypes['UserRoles'][]; // [UserRoles!]!
+  }
+  UserRoles: { // field return type
+    id: number; // Int!
+    role: NexusGenRootTypes['Role']; // Role!
+    roleId: number; // Int!
+    user: NexusGenRootTypes['User']; // User!
+    userId: number; // Int!
   }
 }
 
@@ -103,8 +124,9 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     activateProduct: 'Product'
     createProduct: 'Product'
+    createRole: 'Role'
     createUser: 'User'
-    makeAdmin: 'User'
+    makeAdmin: 'UserRoles'
   }
   Product: { // field return type name
     active: 'Boolean'
@@ -123,16 +145,28 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     product: 'Product'
     products: 'ProductsPayload'
+    roles: 'Role'
     user: 'User'
     userProfile: 'User'
     users: 'User'
+  }
+  Role: { // field return type name
+    id: 'Int'
+    name: 'String'
   }
   User: { // field return type name
     email: 'String'
     id: 'Int'
     name: 'String'
     products: 'Product'
-    role: 'String'
+    roles: 'UserRoles'
+  }
+  UserRoles: { // field return type name
+    id: 'Int'
+    role: 'Role'
+    roleId: 'Int'
+    user: 'User'
+    userId: 'Int'
   }
 }
 
@@ -150,13 +184,15 @@ export interface NexusGenArgTypes {
       ownerId: number; // Int!
       title: string; // String!
     }
+    createRole: { // args
+      name: string; // String!
+    }
     createUser: { // args
       email: string; // String!
       name: string; // String!
     }
     makeAdmin: { // args
       id: number; // Int!
-      isAdmin: boolean; // Boolean!
     }
   }
   Query: {

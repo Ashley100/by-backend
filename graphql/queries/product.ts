@@ -1,11 +1,8 @@
 // Package modules
 import {intArg, nonNull, queryField} from "nexus";
 
-// Local modules
-import {Product} from "../types";
-
 export const product = queryField("product", {
-  type: Product,
+  type: "Product",
   args: {
     id: nonNull(intArg())
   },

@@ -5,8 +5,9 @@
 type Mutation {
   activateProduct(id: Int!, status: Boolean!): Product
   createProduct(active: Boolean!, category: String!, color: String!, description: String!, ownerId: Int!, title: String!): Product
+  createRole(name: String!): Role
   createUser(email: String!, name: String!): User
-  makeAdmin(id: Int!, isAdmin: Boolean!): User
+  makeAdmin(id: Int!): UserRoles
 }
 
 type Product {
@@ -33,9 +34,15 @@ type ProductsPayload {
 type Query {
   product(id: Int!): Product
   products(filter: ProductsFilter, first: Int! = 10, searchBy: String, skip: Int! = 0): ProductsPayload
+  roles: [Role!]!
   user(id: Int!): User
   userProfile: User
   users: [User!]!
+}
+
+type Role {
+  id: Int!
+  name: String!
 }
 
 type User {
@@ -43,5 +50,13 @@ type User {
   id: Int!
   name: String
   products: [Product!]!
-  role: String
+  roles: [UserRoles!]!
+}
+
+type UserRoles {
+  id: Int!
+  role: Role!
+  roleId: Int!
+  user: User!
+  userId: Int!
 }

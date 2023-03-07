@@ -14,12 +14,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Role {
+  id  Int @id @default(autoincrement())
+  name String
+  user_roles UserRoles[]
+}
+
+model UserRoles {
+  id  Int @id @default(autoincrement())
+  user  User @relation(fields: [userId], references: [id])
+  role  Role @relation(fields: [roleId], references: [id])
+  userId  Int
+  roleId  Int
+}
+
 model User {
   id       Int       @id @default(autoincrement())
   email    String    @unique
   name     String?
   products Product[]
-  role     String?
+  roles    UserRoles[]
 }
 
 model Product {
